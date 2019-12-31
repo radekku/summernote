@@ -1809,14 +1809,33 @@
    * @param {Node} node
    * @param {Function} [pred] - predicate function
    */
+  // function listNext(node, pred) {
+  //   pred = pred || func.fail;
+  //   var nodes = [];
+  //   while (node) {
+  //     if (pred(node)) {
+  //       break;
+  //     }
+  //     nodes.push(node);
+  //     node = node.nextSibling;
+  //   }
+  //   return nodes;
+  // }  
+  // fixed_191231
   function listNext(node, pred) {
     pred = pred || func.fail;
-    var nodes = [];
+		var nodes = [];
     while (node) {
       if (pred(node)) {
         break;
       }
-      nodes.push(node);
+      if (node.nodeName.indexOf("BR") == -1) {
+        if (nodes.filter(function (item) {
+          return item.outerHTML === node.outerHTML
+        }).length === 0) {
+          nodes.push(node);
+        }
+      }
       node = node.nextSibling;
     }
     return nodes;
